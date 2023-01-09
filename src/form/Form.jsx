@@ -1,18 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Form.css";
 
 function Form() {
   const [captcha, setCaptcha] = useState("");
-  const [userInput, setUserInput] = useState();
+  const [userInput, setUserInput] = useState("");
 
-  const [responseMessage, setResponseMessage] = useState();
+  const [isCaptchaValid, setIsCaptchaValid] = useState(null);
 
   const generateCaptcha = () => {
     setCaptcha((Math.random() + 1).toString(36).substring(7));
+    setUserInput(" ");
   };
 
-  const validateCaptcha = () => {};
-
+  const validateCaptcha = () => {
+    userInput === captcha ? setIsCaptchaValid(true) : setIsCaptchaValid(false);
+  };
+  useEffect(() => {
+    generateCaptcha();
+  }, []);
   return (
     <div className="form-container">
       <div className="form">
@@ -29,10 +34,18 @@ function Form() {
             <button onClick={() => generateCaptcha()}>⟲</button>
           </div>
           <div className="captcha-validate">
-            <input id="type-captcha" onChange={(e) => setUserInput(e)}></input>
+            <input
+              id="type-captcha"
+              onChange={(e) => setUserInput(e.target.value)}
+              value={userInput}
+            ></input>
             <button onClick={() => validateCaptcha()}>check</button>
           </div>
-          <p>{responseMessage}</p>
+          {isCaptchaValid !== null && isCaptchaValid ? (
+            <p>congrats- you are not a bot </p>
+          ) : (
+            <p>sorry- you are a bot</p>
+          )}
         </div>
       </div>
     </div>
