@@ -4,20 +4,24 @@ import "./Form.css";
 function Form() {
   const [captcha, setCaptcha] = useState("");
   const [userInput, setUserInput] = useState("");
-
   const [isCaptchaValid, setIsCaptchaValid] = useState(null);
 
   const generateCaptcha = () => {
     setCaptcha((Math.random() + 1).toString(36).substring(7));
-    setUserInput(" ");
+    setUserInput("");
+    setIsCaptchaValid(null);
   };
 
   const validateCaptcha = () => {
+    console.log(typeof captcha, { captcha });
+    console.log(typeof userInput, { userInput });
     userInput === captcha ? setIsCaptchaValid(true) : setIsCaptchaValid(false);
   };
   useEffect(() => {
     generateCaptcha();
   }, []);
+  // console.log(isCaptchaValid);
+  // console.log(userInput === captcha);
   return (
     <div className="form-container">
       <div className="form">
@@ -41,11 +45,12 @@ function Form() {
             ></input>
             <button onClick={() => validateCaptcha()}>check</button>
           </div>
-          {isCaptchaValid !== null && isCaptchaValid ? (
-            <p>congrats- you are not a bot </p>
-          ) : (
-            <p>sorry- you are a bot</p>
-          )}
+          {isCaptchaValid !== null &&
+            (isCaptchaValid ? (
+              <p>congrats- you are not a bot </p>
+            ) : (
+              <p>sorry- you are a bot</p>
+            ))}
         </div>
       </div>
     </div>
